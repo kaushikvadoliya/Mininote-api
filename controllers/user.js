@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const { setUser } = require("../service/auth");
+const { setUser, getUser } = require("../service/auth");
 const nodemailer = require("nodemailer");
 
 const userSignUp = async (req, res) => {
@@ -24,7 +24,9 @@ const checkLogin = async (req, res) => {
   if (!token) {
     return res.status(401).json("token is expired");
   }
-  return res.status(200).json("user is logged in");
+  const userId = getUser(token);
+  const user = await User.findById(userId);
+  return res.status(200).json({ message: "user is logged in", user: user });
 };
 
 const userLogin = async (req, res) => {

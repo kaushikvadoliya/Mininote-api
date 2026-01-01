@@ -1,5 +1,7 @@
 const multer = require("multer");
 const Note = require("../models/note");
+const { getUser } = require("../service/auth");
+const User = require("../models/user");
 
 const getAllNotes = async (req, res) => {
   const currentUser = req.user._id;
@@ -65,7 +67,14 @@ const updateNoteByID = async (req, res) => {
 };
 
 const uploadIamge = async (req, res) => {
-  console.log("request file is ", req.file);
+  const token = req.cookies.uid;
+  const user = getUser(token);
+  if (!user) {
+    return res.status(401).json("user is not found");
+  }
+  await User.findByIdAndUpdate(user._id, {
+    image: req.file.path,
+  });
   return res.json("formData is uploaded");
 };
 
