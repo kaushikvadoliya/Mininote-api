@@ -1,3 +1,4 @@
+const multer = require("multer");
 const Note = require("../models/note");
 
 const getAllNotes = async (req, res) => {
@@ -63,6 +64,11 @@ const updateNoteByID = async (req, res) => {
   return res.status(200).json("Note updated");
 };
 
+const uploadIamge = async (req, res) => {
+  console.log("request file is ", req.file);
+  return res.json("formData is uploaded");
+};
+
 module.exports = {
   getAllNotes,
   createNote,
@@ -70,4 +76,5 @@ module.exports = {
   updateNoteByID,
   getNoteById,
   deleteMultipleNotes,
+  uploadIamge,
 };
