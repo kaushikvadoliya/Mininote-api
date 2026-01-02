@@ -9,7 +9,7 @@ const userSignUp = async (req, res) => {
     email,
     password,
   });
-  return res.send("user is created");
+  return res.status(200).json("user is created");
 };
 
 const userLogout = (req, res) => {
@@ -38,7 +38,7 @@ const userLogin = async (req, res) => {
   }
   const token = setUser(user);
   res.cookie("uid", token, { maxAge: 24 * 60 * 60 * 1000 });
-  return res.send("user is logged in");
+  return res.status(200).json("user is logged in");
 };
 
 const verifyOtp = async (req, res) => {
@@ -78,8 +78,8 @@ const sendEmail = async (req, res) => {
       </div>
     `,
     });
-    res.cookie("otp", otp, { maxAge: 1000 * 60 });
-    return res.json(otp);
+    res.cookie("otp", otp, { maxAge: 1000 * 30 });
+    return res.status(200).json("otp is send successfully");
   } catch (error) {
     return res.status(401).json("Email failed");
   }
@@ -92,7 +92,7 @@ const resetPassword = async (req, res) => {
     { password: password },
     { new: true }
   );
-  return res.json("password is update");
+  return res.status(200).json("password is update");
 };
 
 const userDetails = async (req, res) => {
@@ -102,7 +102,6 @@ const userDetails = async (req, res) => {
   }
   const userId = getUser(token);
   const user = await User.findById(userId);
-  console.log("user is ", user);
   return res.status(200).json({ message: "userDetails loaded", user: user });
 };
 
