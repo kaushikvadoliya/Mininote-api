@@ -24,9 +24,7 @@ const checkLogin = async (req, res) => {
   if (!token) {
     return res.status(401).json("token is expired");
   }
-  const userId = getUser(token);
-  const user = await User.findById(userId);
-  return res.status(200).json({ message: "user is logged in", user: user });
+  return res.status(200).json("user is logged in");
 };
 
 const userLogin = async (req, res) => {
@@ -40,9 +38,7 @@ const userLogin = async (req, res) => {
   }
   const token = setUser(user);
   res.cookie("uid", token, { maxAge: 24 * 60 * 60 * 1000 });
-  const userId = getUser(token);
-  const userData = await User.findById(userId);
-  return res.send({ message: "user is logged in", user: userData });
+  return res.send("user is logged in");
 };
 
 const verifyOtp = async (req, res) => {
@@ -99,6 +95,17 @@ const resetPassword = async (req, res) => {
   return res.json("password is update");
 };
 
+const userDetails = async (req, res) => {
+  const token = req.cookies.uid;
+  if (!token) {
+    return res.status(401).json("token is expired");
+  }
+  const userId = getUser(token);
+  const user = await User.findById(userId);
+  console.log("user is ", user);
+  return res.status(200).json({ message: "userDetails loaded", user: user });
+};
+
 module.exports = {
   userSignUp,
   userLogin,
@@ -107,4 +114,5 @@ module.exports = {
   sendEmail,
   verifyOtp,
   resetPassword,
+  userDetails,
 };

@@ -67,12 +67,13 @@ const updateNoteByID = async (req, res) => {
 };
 
 const uploadIamge = async (req, res) => {
+  console.log("upload image is called");
   const token = req.cookies.uid;
   const user = getUser(token);
   if (!user) {
     return res.status(401).json("user is not found");
   }
-  console.log("photo is", req.file);
+  console.log("image is ", req.file);
   await User.findByIdAndUpdate(user._id, {
     image: req.file.path,
   });
