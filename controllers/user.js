@@ -40,7 +40,9 @@ const userLogin = async (req, res) => {
   }
   const token = setUser(user);
   res.cookie("uid", token, { maxAge: 24 * 60 * 60 * 1000 });
-  return res.send("user is logged in");
+  const userId = getUser(token);
+  const userData = await User.findById(userId);
+  return res.send({ message: "user is logged in", user: userData });
 };
 
 const verifyOtp = async (req, res) => {

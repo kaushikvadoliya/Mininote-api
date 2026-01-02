@@ -72,6 +72,7 @@ const uploadIamge = async (req, res) => {
   if (!user) {
     return res.status(401).json("user is not found");
   }
+  console.log("photo is", req.file);
   await User.findByIdAndUpdate(user._id, {
     image: req.file.path,
   });
